@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     private bool _isMove = false;
-
+    private bool _facingRight = false;
     private void Update()
     {
         float horizontal = Input.GetAxisRaw(Horizontal) * _speed * Time.deltaTime;
@@ -26,12 +26,13 @@ public class Player : MonoBehaviour
         _animator.SetBool(NameAnimation, _isMove);
     }
 
-    private void FlipSprite(float horizontal)
+    private void FlipSprite(float direction)
     {
-        if (horizontal < 0)
-            GetComponent<SpriteRenderer>().flipX = true;
-        else if (horizontal > 0)
-            GetComponent<SpriteRenderer>().flipX = false;
+        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
 
+        if (direction < 0)
+            spriteRenderer.flipX = true;
+        else if (direction > 0)
+            spriteRenderer.flipX = false;
     }
 }
