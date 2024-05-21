@@ -21,18 +21,17 @@ public class Player : MonoBehaviour
         transform.Translate(horizontal, vertical, 0, Space.World);
         FlipSprite(horizontal);
 
-         _isMove = horizontal != 0 || vertical != 0;
+        _isMove = horizontal != 0 || vertical != 0;
 
         _animator.SetBool(NameAnimation, _isMove);
     }
 
-    private void FlipSprite(float direction)
+    private void FlipSprite(float horizontal)
     {
-        SpriteRenderer spriteRenderer = GetComponent<SpriteRenderer>();
+        if (horizontal < 0)
+            GetComponent<SpriteRenderer>().flipX = true;
+        else if (horizontal > 0)
+            GetComponent<SpriteRenderer>().flipX = false;
 
-        if(direction < 0)
-            spriteRenderer.flipX = true;
-        else if(direction > 0)
-            spriteRenderer.flipX = false;
     }
 }

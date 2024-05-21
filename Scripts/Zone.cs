@@ -1,8 +1,10 @@
+using System.Collections;
 using UnityEngine;
 
 public class Zone : MonoBehaviour
 {
     [SerializeField] private AudioSource _audioSource;
+
     private bool _playerInZone = false;
 
     private void Start()
@@ -12,37 +14,55 @@ public class Zone : MonoBehaviour
 
     private void Update()
     {
-        if (_playerInZone)
+        if (_audioSource.volume == 0)
         {
-            ChangeValue(_audioSource.maxDistance);
-        }
-        else
-        {
-            ChangeValue();
+            StopCoroutine(ChangeValue());
         }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.GetComponent<Player>())
+        if (collision.TryGetComponent(out Player player))
         {
-            _playerInZone = true;
+            if (player != null)
+            {
+                StartCoroutine(ChangeValue());
+                _playerInZone = true;
+            }
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.GetComponent<Player>())
+        if (collision.TryGetComponent(out Player player))
         {
-            _playerInZone = false;
+            if (player != null)
+            {
+                _playerInZone = false;
+            }
         }
     }
 
-    private void ChangeValue(float maxValue = 0)
+    private IEnumerator ChangeValue()
     {
         float maxDelta = 0.3f;
 
-        _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, maxValue, maxDelta * Time.deltaTime);
+        bool isWork = true;
 
+        while (isWork)
+        {
+            _audioSource.volume = Mathf.MoveTowards(_audioSource.volume, GetTarrgetValue(), maxDelta * Time.deltaTime);
+            yield return null;
+        }
+    }
+
+    private float GetTarrgetValue()
+    {
+        if (_playerInZone)
+        {
+            return _audioSource.maxDistance;
+        }
+
+        return 0;
     }
 }
