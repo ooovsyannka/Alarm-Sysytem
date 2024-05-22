@@ -1,3 +1,4 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
@@ -12,16 +13,16 @@ public class Player : MonoBehaviour
     [SerializeField] private Animator _animator;
 
     private bool _isMove = false;
-    private bool _facingRight = false;
+
     private void Update()
     {
         float horizontal = Input.GetAxisRaw(Horizontal) * _speed * Time.deltaTime;
         float vertical = Input.GetAxisRaw(Vertical) * _speed * Time.deltaTime;
 
-        transform.Translate(horizontal, vertical, 0, Space.World);
-        FlipSprite(horizontal);
-
         _isMove = horizontal != 0 || vertical != 0;
+        transform.Translate(horizontal, vertical, 0, Space.World);
+
+        FlipSprite(horizontal);
 
         _animator.SetBool(NameAnimation, _isMove);
     }
