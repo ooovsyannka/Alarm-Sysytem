@@ -8,7 +8,7 @@ public class Zone : MonoBehaviour
     {
         if (collision.TryGetComponent(out Player player))
         {
-            _alarm.On();
+            _alarm.VolueUp();
         }
     }
 
@@ -16,7 +16,7 @@ public class Zone : MonoBehaviour
     {
         if (collision.TryGetComponent(out Player player))
         {
-            _alarm.Off();
+            _alarm.VolueDown();
         }
     }
 }
